@@ -46,7 +46,6 @@ pipeline {
             }
         }
         stage('SmokeTest') {
-            }
             steps {
                 script {
                     sleep (time: 5)
