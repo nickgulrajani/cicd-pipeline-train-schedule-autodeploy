@@ -42,7 +42,6 @@ pipeline {
                    kubectl apply -f redis-leader-deployment.yaml
                    kubectl get pods 
                    """ 
-                )
             }
         }
         stage('SmokeTest') {
