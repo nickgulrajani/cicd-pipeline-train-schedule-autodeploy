@@ -25,7 +25,6 @@ pipeline {
                         /usr/bin/docker scan nicholasgull/train-schedule
                         /usr/local/bin/snyk monitor
                        ./scanscript
-                   """
                         """
                     }
                 }
