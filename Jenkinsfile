@@ -36,6 +36,7 @@ pipeline {
         stage('CanaryDeploy') {
             steps {
                    sh  """
+                   gcloud container clusters get-credentials nick-one-kub-healthcheck --zone us-central1-c --project devsecops-311418 
                    cd /home/nichgul/GCEGKE/PHPGUESTBOOKAPP
                    pwd
                    ls
