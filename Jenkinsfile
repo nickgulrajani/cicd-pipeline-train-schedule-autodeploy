@@ -35,13 +35,13 @@ pipeline {
         }
         stage('CanaryDeploy') {
             steps {
-                   sh  ***
+                   sh  """
                    cd /home/nichgul/GCEGKE/PHPGUESTBOOKAPP
                    pwd
                    ls
                    kubectl apply -f redis-leader-deployment.yaml
                    kubectl get pods 
-                   ***
+                   """ 
                 )
             }
         }
