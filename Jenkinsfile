@@ -42,6 +42,7 @@ pipeline {
                 gcloud container clusters get-credentials nick-one-kub-healthcheck --zone us-central1-c --project devsecops-311418
                 pwd
                 kubectl apply -f train-schedule-service-canary
+                """
             }
         }
         }
