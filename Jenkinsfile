@@ -21,10 +21,7 @@ pipeline {
                     app.inside {
                         sh """
                         echo Hello, World!
-                        cd /home/nichgul/APPDEV/CICDPL/cicd-pipeline-train-schedule-autodeploy
-                        pwd
-                        ls
-                        ./scanscript > vulnerability-scan
+                        SNYK nicholasgull/train-schedule
                         """
                     }
                 }
