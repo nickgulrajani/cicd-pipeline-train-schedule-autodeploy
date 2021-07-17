@@ -34,14 +34,14 @@ pipeline {
             }
         }
         stage('CanaryDeploy') {
+            environment { 
+                CANARY_REPLICAS = 1
+            }
             steps {
-                   sh  ***
-                   cd /home/nichgul/GCEGKE/PHPGUESTBOOKAPP
-                   pwd
-                   ls
-                   kubectl apply -f redis-leader-deployment.yaml
-                   kubectl get pods 
-                   ***
+                kubernetesDeploy(
+                    kubeconfigId: 'kubeconfig',
+                    configs: 'train-schedule-kube-canary.yml',
+                    enableConfigSubstitution: true
                 )
             }
         }
