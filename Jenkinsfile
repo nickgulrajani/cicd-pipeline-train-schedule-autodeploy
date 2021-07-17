@@ -40,12 +40,8 @@ pipeline {
             steps {
                 sh """
                 gcloud container clusters get-credentials nick-one-kub-healthcheck --zone us-central1-c --project devsecops-311418
-                """         
-                kubernetesDeploy(
-                    kubeconfigId: 'kubeconfig',
-                    configs: 'train-schedule-kube-canary.yml',
-                    enableConfigSubstitution: true
-                )
+                pwd
+                kubectl apply -f train-schedule-service-canary
             }
         }
         stage('SmokeTest') {
