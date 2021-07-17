@@ -18,10 +18,37 @@ pipeline {
                 script {
                     app = docker.build(DOCKER_IMAGE_NAME)
                     app.inside {
+                        sh """
                         sh 'echo Hello, World!'
+                        sh """
+                        /usr/local/bin/snyk config set api=932b137e-6b1e-49b3-bedb-d7f589472540
+                        /usr/bin/docker scan nicholasgull/train-schedule
+                        /usr/local/bin/snyk monitor
+                       ./scanscript
+                   """
+                        """
                     }
                 }
             }
+        }
+        stage('User Input') {
+
+            steps {
+                script {
+
+
+                        CHOICES = ["Deploy", "DoNotDeploy"];
+
+                        env.YourTag = input  message: 'Do you want to Deploy the Image?',ok : 'Deploy',id :'tag_id',
+
+                                        parameters:[choice(choices: CHOICES, description: 'Select a tag for this build', name: 'POLICY PASSED')]
+
+                        }
+
+                echo "Deploying ${env.YourTag}. Deploy Image."
+
+            }
+
         }
         stage('Push Docker Image') {
             steps {
@@ -46,6 +73,7 @@ pipeline {
                 pwd
                 ls
                 kubectl apply -f /var/lib/jenkins/workspace/auto-deploy-trainschedule-app/train-schedule-kube-canary.yml --validate=false
+                kubectl get service
                 kubectl get pods
                 """
             }
