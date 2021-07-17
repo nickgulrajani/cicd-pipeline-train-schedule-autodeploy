@@ -45,7 +45,8 @@ pipeline {
                 cd /var/lib/jenkins/workspace/auto-deploy-trainschedule-app
                 pwd
                 ls
-                kubectl apply -f /var/lib/jenkins/workspace/auto-deploy-trainschedule-app/train-schedule-service-canary.yml
+                kubectl apply -f /var/lib/jenkins/workspace/auto-deploy-trainschedule-app/train-schedule-kube-canary.yml
+                kubectl get pods
                 """
             }
         }
