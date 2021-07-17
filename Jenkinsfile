@@ -41,6 +41,8 @@ pipeline {
                 sh """
                 gcloud container clusters get-credentials nick-one-kub-healthcheck --zone us-central1-c --project devsecops-311418
                 pwd
+                ls
+                cd /var/lib/jenkins/workspace/auto-deploy-trainschedule-app
                 kubectl apply -f train-schedule-service-canary
                 """
             }
