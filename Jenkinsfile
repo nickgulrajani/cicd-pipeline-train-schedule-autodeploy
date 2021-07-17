@@ -4,6 +4,7 @@ pipeline {
         //be sure to replace "willbla" with your own Docker Hub username
         DOCKER_IMAGE_NAME = "nicholasgull/train-schedule"
         CANARY_REPLICAS = 0
+        SNYK = "/usr/local/bin/snyk"
     }
     stages {
         stage('Build') {
@@ -20,9 +21,9 @@ pipeline {
                     app.inside {
                         sh """
                         echo Hello, World!
-                        /usr/local/bin/snyk config set api=932b137e-6b1e-49b3-bedb-d7f589472540
+                        $SNYK config set api=932b137e-6b1e-49b3-bedb-d7f589472540
                         /usr/bin/docker scan nicholasgull/train-schedule
-                        /usr/local/bin/snyk monitor
+                        $SNYK monitor
                        ./scanscript
                         """
                     }
