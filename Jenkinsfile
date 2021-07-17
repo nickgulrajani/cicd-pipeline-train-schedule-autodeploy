@@ -21,9 +21,6 @@ pipeline {
                     app.inside {
                         sh """
                         echo Hello, World!
-                        $SNYK config set api=932b137e-6b1e-49b3-bedb-d7f589472540
-                        /usr/bin/docker scan nicholasgull/train-schedule
-                        $SNYK monitor
                        ./scanscript
                         """
                     }
