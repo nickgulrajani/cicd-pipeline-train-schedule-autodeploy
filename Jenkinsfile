@@ -1,11 +1,6 @@
+List<String> CHOICES = [];
 pipeline {
     agent any
-    environment {
-        //be sure to replace "willbla" with your own Docker Hub username
-        DOCKER_IMAGE_NAME = "nicholasgull/train-schedule"
-        CANARY_REPLICAS = 0
-        SNYK = "/usr/local/bin/snyk"
-    }
     stages {
         stage('Build') {
             steps {
@@ -14,32 +9,31 @@ pipeline {
                 archiveArtifacts artifacts: 'dist/trainSchedule.zip'
             }
         }
-        stage('Build Docker Image') {
+        stage('Build and Scan Docker Image') {
             steps {
                 script {
-                    app = docker.build(DOCKER_IMAGE_NAME)
+                    app = docker.build("nicholasgull/train-schedule")
                     app.inside {
                         sh """
-                        echo Hello, World!
-                        SNYK nicholasgull/train-schedule
+                        echo \$(curl localhost:8080)
                         """
                     }
                 }
-            }
+        }
         }
         stage('User Input') {
 
             steps {
                 script {
 
-
-                        CHOICES = ["Deploy", "DoNotDeploy"];
+            
+                        CHOICES = ["Deploy", "DoNotDeploy"];   
 
                         env.YourTag = input  message: 'Do you want to Deploy the Image?',ok : 'Deploy',id :'tag_id',
 
                                         parameters:[choice(choices: CHOICES, description: 'Select a tag for this build', name: 'POLICY PASSED')]
 
-                        }
+                        }          
 
                 echo "Deploying ${env.YourTag}. Deploy Image."
 
@@ -56,23 +50,5 @@ pipeline {
                 }
             }
         }
-        stage('CanaryDeploy') {
-            environment { 
-                CANARY_REPLICAS = 1
-            }
-            steps {
-                sh """
-                gcloud container clusters get-credentials nick-one-kub-healthcheck --zone us-central1-c --project devsecops-311418
-                pwd
-                ls
-                cd /var/lib/jenkins/workspace/auto-deploy-trainschedule-app
-                pwd
-                ls
-                kubectl apply -f /var/lib/jenkins/workspace/auto-deploy-trainschedule-app/train-schedule-kube-canary.yml --validate=false
-                kubectl get service
-                kubectl get pods
-                """
-            }
-        }
-        }
+    }
 }
